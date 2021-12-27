@@ -1,5 +1,6 @@
 import os
 import random
+import yagmail
 from datetime import datetime
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
@@ -9,6 +10,9 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 USERID1 = os.getenv('USERID1')
 USERID2 = os.getenv('USERID2')
 CHANNEL = os.getenv('CHANNEL')
+SENDER = os.getenv('SENDER')
+PASSWORD = os.getenv('PASSWORD')
+RECEIVER = os.getenv('RECEIVER')
 
 BIOLOGY = datetime(year=2022, month=1, day=5, hour=8, minute=45)
 CHEMISTRY = datetime(year=2022, month=1, day=5, hour=11, minute=5)
@@ -68,6 +72,14 @@ async def test():
                        f"This is your personal reminder's hourly reminder\n"
                        f"You have T-{hours_remaining} hours remaining until your {subject_name}\n"
                        f"{subject_image}")
+    yag = yagmail.SMTP(SENDER, PASSWORD)
+    yag.send(
+        to=RECEIVER,
+        subject="Hourly Reminder",
+        contents=f"Hi Haroon,\n"
+                 f"This is your personal reminder's hourly reminder\n"
+                 f"You have T-{hours_remaining} hours remaining until your {subject_name}\n",
+    )
 
 
 @bot.event
