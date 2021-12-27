@@ -6,7 +6,9 @@ from discord.ext import commands, tasks
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-USERID = os.getenv('USERID')
+USERID1 = os.getenv('USERID1')
+USERID2 = os.getenv('USERID2')
+CHANNEL = os.getenv('CHANNEL')
 
 BIOLOGY = datetime(year=2022, month=1, day=5, hour=8, minute=45)
 CHEMISTRY = datetime(year=2022, month=1, day=5, hour=11, minute=5)
@@ -57,12 +59,12 @@ def convert_to_hours(duration):
 
 @tasks.loop(hours=1)
 async def test():
-    channel = bot.get_channel(923592401258422365)
+    channel = bot.get_channel(int(CHANNEL))
     subject_data, exam_time = random.choice(list(EXAMS.items()))
     subject_name, subject_image = subject_data
     time_remaining = exam_time - datetime.now()
     hours_remaining = convert_to_hours(time_remaining)
-    await channel.send(f"Hi <@{USERID}>,\n"
+    await channel.send(f"Hi <@{USERID1}> and <@{USERID2}>,\n"
                        f"This is your personal reminder's hourly reminder\n"
                        f"You have T-{hours_remaining} hours remaining until your {subject_name}\n"
                        f"{subject_image}")
